@@ -1,4 +1,4 @@
-import controller
+import ik
 import math
 import tkinter as tk
 from tkinter import ttk
@@ -14,9 +14,10 @@ canvas = tk.Canvas(window, background="white", width=400, height=400)
 canvas.place(x=0, y=0)
 
 
-ctlr = controller.Arm3Joints(
-    [100, 100, 50],
-    [PI * 3 / 4, PI * 2 / 3, PI * 5 / 4],
+ctlr = ik.ArmIK(
+    50,
+    100,
+    100,
 )
 
 
@@ -24,25 +25,25 @@ def update(e):
     x = e.x - 100
     y = 400 - e.y - 100
 
-    ctlr.set_tip_position((x, y))
-    ctlr.set_tip_angle(PI / 2)
-    print("status : ", ctlr.calculate())
+    joints = ctlr.calculate(x, y, -math.pi / 4)
 
-    print(ctlr.joints_angle)
+    if joints == None:
+        return
 
     arm_agl = [PI / 2]
 
-    for d in ctlr.joints_angle:
+    for d in joints:
         nxt_agl = arm_agl[-1] - PI + d
         arm_agl.append(nxt_agl)
 
     print(arm_agl)
 
     arm_vec = [(0, -30), (0, 0)]
+    arms_length = [ctlr.base, ctlr.mid, ctlr.tip]
 
     for a in range(1, len(arm_agl)):
         angle = arm_agl[a]
-        length = ctlr.arms_length[a - 1]
+        length = arms_length[a - 1]
         x = arm_vec[-1][0] + math.cos(angle) * length
         y = arm_vec[-1][1] + math.sin(angle) * length
         arm_vec.append((x, y))

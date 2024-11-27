@@ -77,7 +77,7 @@ class Arm3Joints:
 
         A, B, C = get_vertex_angle(length, arm_root, arm_middle)
 
-        length_angle = math.atan(y1 / x1)
+        length_angle = math.atan2(y1, x1)
 
         joint_root = PI / 2 + length_angle + B
         joint_middle = A
