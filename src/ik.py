@@ -60,9 +60,9 @@ class ArmIK:
 
         dist_angle = math.atan2(y1, x1)
 
-        jb = math.pi / 2 + dist_angle + a
-        jm = c
-        jt = b + (math.pi / 2 - dist_angle) + math.pi / 2 + tip_angle
+        jb = dist_angle + a
+        jm = jb - math.pi + c
+        jt = tip_angle
         return jb, jm, jt
 
 

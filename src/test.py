@@ -30,22 +30,13 @@ def update(e):
     if joints == None:
         return
 
-    arm_agl = [PI / 2]
-
-    for d in joints:
-        nxt_agl = arm_agl[-1] - PI + d
-        arm_agl.append(nxt_agl)
-
-    print(arm_agl)
-
     arm_vec = [(0, -30), (0, 0)]
     arms_length = [ctlr.base, ctlr.mid, ctlr.tip]
 
-    for a in range(1, len(arm_agl)):
-        angle = arm_agl[a]
-        length = arms_length[a - 1]
-        x = arm_vec[-1][0] + math.cos(angle) * length
-        y = arm_vec[-1][1] + math.sin(angle) * length
+    for a in range(len(joints)):
+        _x, _y = arm_vec[-1]
+        x = _x + math.cos(joints[a]) * arms_length[a]
+        y = _y + math.sin(joints[a]) * arms_length[a]
         arm_vec.append((x, y))
 
     canvas.delete("all")
